@@ -1,5 +1,5 @@
 // URL base de tu backend Spring Boot (ajustada al puerto configurado en tu servidor)
-const API_URL = "http://localhost:8080/productos";
+const API_URL = "https://inventario-backend-production-e240.up.railway.app/productos";
 
 let productos = [];
 let idEditando = null;
