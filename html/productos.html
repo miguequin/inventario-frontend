@@ -1,0 +1,165 @@
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestión de Productos - Sistema de Inventario</title>
+    <!-- CDN Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome (Iconos) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Tu archivo CSS Local -->
+    <link rel="stylesheet" href="../css/estilos.css">
+</head>
+<body class="bg-light">
+
+    <!-- Encabezado Principal -->
+    <header class="bg-primary text-white text-center py-4 shadow-sm">
+        <h1 class="fw-bold m-0"><i class="fa-solid fa-boxes-stacked me-2"></i>Sistema de Inventario</h1>
+        <p class="lead m-0 opacity-75">Gestión y Control de Productos</p>
+    </header>
+
+    <!-- Menú de Navegación -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark mb-4 shadow-sm">
+        <div class="container">
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#menuNavegacion">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse justify-content-center" id="menuNavegacion">
+                <ul class="navbar-nav gap-3">
+                    <li class="nav-item">
+                        <a class="nav-link" href="index.html"><i class="fa-solid fa-house me-1"></i>Inicio</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active fw-bold" href="productos.html"><i class="fa-solid fa-list-check me-1"></i>Gestión de Productos</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Contenedor Principal -->
+    <main class="container my-4">
+
+        <!-- Mensajes de Alerta generados por JavaScript -->
+        <div id="alertaMensaje"></div>
+
+        <!-- 1. Formulario de Registro / Modificación -->
+        <section class="card border-0 shadow-sm rounded-3 p-4 mb-4 bg-white">
+            <h2 class="h4 text-primary fw-bold mb-3 border-bottom pb-2" id="formTitulo">
+                <i class="fa-solid fa-pen-to-square me-2"></i>Registrar Producto
+            </h2>
+
+            <form id="formProducto">
+                <div class="row g-3">
+                    <div class="col-12 col-md-4">
+                        <label for="codigo" class="form-label fw-semibold text-secondary">Código:</label>
+                        <input type="text" class="form-control" id="codigo" placeholder="Ej: P001" required>
+                    </div>
+                    <div class="col-12 col-md-4">
+                        <label for="nombre" class="form-label fw-semibold text-secondary">Nombre:</label>
+                        <input type="text" class="form-control" id="nombre" placeholder="Ej: Procesador Intel i5" required>
+                    </div>
+                    <div class="col-12 col-md-4">
+                        <label for="categoria" class="form-label fw-semibold text-secondary">Categoría:</label>
+                        <select class="form-select" id="categoria" required>
+                            <option value="">Seleccione...</option>
+                            <option value="Tecnología">Tecnología</option>
+                            <option value="Papelería">Papelería</option>
+                            <option value="Accesorios">Accesorios</option>
+                        </select>
+                    </div>
+                    <div class="col-12 col-md-4">
+                        <label for="proveedor" class="form-label fw-semibold text-secondary">Proveedor:</label>
+                        <input type="text" class="form-control" id="proveedor" placeholder="Ej: Tecno SAS" required>
+                    </div>
+                    <div class="col-12 col-md-4">
+                        <label for="precio" class="form-label fw-semibold text-secondary">Precio ($):</label>
+                        <div class="input-group">
+                            <span class="input-group-text">$</span>
+                            <input type="number" class="form-control" id="precio" step="0.01" min="0.01" placeholder="0.00" required>
+                        </div>
+                    </div>
+                    <div class="col-12 col-md-4">
+                        <label for="cantidad" class="form-label fw-semibold text-secondary">Cantidad en Stock:</label>
+                        <input type="number" class="form-control" id="cantidad" min="0" placeholder="0" required>
+                    </div>
+                </div>
+
+                <div class="mt-4 d-flex gap-2">
+                    <button type="submit" id="btnGuardar" class="btn btn-primary fw-semibold">
+                        <i class="fa-solid fa-floppy-disk me-1"></i>Guardar Producto
+                    </button>
+                    <button type="button" id="btnCancelar" class="btn btn-outline-secondary" onclick="cancelarEdicion()">
+                        <i class="fa-solid fa-rotate-left me-1"></i>Limpiar / Cancelar
+                    </button>
+                </div>
+            </form>
+        </section>
+
+        <div class="card mb-4 shadow-sm">
+    <div class="card-body">
+        <div class="row g-2 align-items-center">
+            <div class="col-auto">
+                <label for="buscarId" class="col-form-label fw-bold">Buscar por ID:</label>
+            </div>
+            <div class="col-auto">
+                <input type="number" id="buscarId" class="form-control" placeholder="Ej: 1" min="1">
+            </div>
+            <div class="col-auto">
+                <button type="button" class="btn btn-primary" onclick="buscarProductoPorId()">
+                    <i class="fa-solid fa-magnifying-glass me-1"></i> Buscar
+                </button>
+                <button type="button" class="btn btn-secondary" onclick="limpiarBusqueda()">
+                    <i class="fa-solid fa-rotate-left me-1"></i> Ver Todos
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+        <!-- 2. Tabla del Inventario -->
+        <section class="card border-0 shadow-sm rounded-3 p-4 bg-white">
+            <h2 class="h4 text-primary fw-bold mb-3 border-bottom pb-2">
+                <i class="fa-solid fa-table-list me-2"></i>Lista de Productos
+            </h2>
+
+            <div class="table-responsive">
+    <table class="table table-hover table-striped align-middle border">
+        <thead class="table-dark">
+            <tr>
+                <th scope="col">ID</th>
+                <th scope="col">Código</th>
+                <th scope="col">Producto</th>
+                <th scope="col">Categoría</th>
+                <th scope="col">Precio</th>
+                <th scope="col" class="text-center">Cantidad</th>
+                <th scope="col" class="text-center">Acciones</th>
+            </tr>
+        </thead>
+        <tbody id="tablaProductos">
+            <!-- Filas inyectadas por app.js -->
+        </tbody>
+    </table>
+</div>
+            <!-- Resumen Total -->
+            <div class="mt-3 text-end">
+                <span class="h5 fw-bold text-success" id="totalGeneral">Valor Total Inventario: $0</span>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Pie de Página -->
+    <footer class="bg-dark text-white text-center py-4 mt-5">
+        <div class="container">
+            <p class="m-0">Sistema de Inventario &copy; 2026</p>
+            <small class="text-secondary">Tecnología en Desarrollo de Software 3233929</small>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="../js/app.js"></script>
+</body>
+</html>

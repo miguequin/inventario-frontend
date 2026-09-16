@@ -1,0 +1,160 @@
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistema de Inventario - Inicio</title>
+    
+    <!-- CSS de Bootstrap 5 -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome (Iconos) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Tu archivo CSS local -->
+    <link rel="stylesheet" href="../css/estilos.css">
+</head>
+<body class="bg-light">
+
+    <!-- Encabezado Principal -->
+    <header class="bg-primary text-white text-center py-4 mb-3 shadow-sm">
+        <h1 class="fw-bold m-0"><i class="fa-solid fa-boxes-stacked me-2"></i>Sistema de Inventario</h1>
+        <p class="lead m-0 opacity-75">Gestión y Control de Inventario</p>
+    </header>
+
+    <!-- Menú de Navegación -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark mb-4 shadow-sm">
+        <div class="container">
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#menuNavegacion">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse justify-content-center" id="menuNavegacion">
+                <ul class="navbar-nav gap-3">
+                    <li class="nav-item">
+                        <a class="nav-link" href="index.html"><i class="fa-solid fa-house me-1"></i>Inicio</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active fw-bold" href="productos.html"><i class="fa-solid fa-list-check me-1"></i>Gestión de Productos</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Contenido Principal -->
+    <main class="container my-4">
+
+        <!-- Sección: Mensaje de Bienvenida -->
+        <section class="mb-4 p-4 bg-white rounded-3 shadow-sm border-start border-primary border-4">
+            <h2 class="h4 text-primary fw-bold mb-1">Bienvenido al Sistema de Inventario</h2>
+            <p class="mb-0 text-muted">Esta es la página principal del sistema.</p>
+        </section>
+
+        <!-- Tarjetas del Dashboard -->
+        <section class="row g-3 mb-4">
+            <div class="col-12 col-md-4">
+                <div class="card h-100 shadow-sm border-0 bg-primary text-white">
+                    <div class="card-body d-flex justify-content-between align-items-center">
+                        <div>
+                            <h3 class="h6 card-title m-0">Productos</h3>
+                            <p class="display-6 fw-bold m-0">25</p>
+                        </div>
+                        <i class="fa-solid fa-box-open fa-3x opacity-50"></i>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-12 col-md-4">
+                <div class="card h-100 shadow-sm border-0 bg-success text-white">
+                    <div class="card-body d-flex justify-content-between align-items-center">
+                        <div>
+                            <h3 class="h6 card-title m-0">Disponibles</h3>
+                            <p class="display-6 fw-bold m-0">10</p>
+                        </div>
+                        <i class="fa-solid fa-circle-check fa-3x opacity-50"></i>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-12 col-md-4">
+                <div class="card h-100 shadow-sm border-0 bg-danger text-white">
+                    <div class="card-body d-flex justify-content-between align-items-center">
+                        <div>
+                            <h3 class="h6 card-title m-0">Agotados</h3>
+                            <p class="display-6 fw-bold m-0">5</p>
+                        </div>
+                        <i class="fa-solid fa-triangle-exclamation fa-3x opacity-50"></i>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Bloque de 2 Columnas para Listas de Funciones y Proceso -->
+        <div class="row g-4 mb-4">
+            <section class="col-12 col-md-6">
+                <div class="p-4 bg-white rounded-3 shadow-sm h-100 border-0">
+                    <h2 class="h4 text-secondary border-bottom pb-2 mb-3"><i class="fa-solid fa-gear me-2"></i>Funciones del Sistema</h2>
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item px-0"><i class="fa-solid fa-check text-success me-2"></i>Registrar Productos</li>
+                        <li class="list-group-item px-0"><i class="fa-solid fa-check text-success me-2"></i>Consultar Productos</li>
+                        <li class="list-group-item px-0"><i class="fa-solid fa-check text-success me-2"></i>Actualizar Existencias</li>
+                        <li class="list-group-item px-0"><i class="fa-solid fa-check text-success me-2"></i>Eliminar Productos</li>
+                    </ul>
+                </div>
+            </section>
+
+            <section class="col-12 col-md-6">
+                <div class="p-4 bg-white rounded-3 shadow-sm h-100 border-0">
+                    <h2 class="h4 text-secondary border-bottom pb-2 mb-3"><i class="fa-solid fa-list-check me-2"></i>Proceso de uso</h2>
+                    <ol class="list-group list-group-numbered list-group-flush">
+                        <li class="list-group-item px-0">Ingresar al sistema</li>
+                        <li class="list-group-item px-0">Registrar productos</li>
+                        <li class="list-group-item px-0">Consultar la información</li>
+                        <li class="list-group-item px-0">Actualizar existencias</li>
+                    </ol>
+                </div>
+            </section>
+        </div>
+
+        <!-- Sección Personal y Descripción -->
+        <section class="p-4 bg-white rounded-3 shadow-sm border-0 mb-4">
+            <div class="row align-items-center g-4">
+                <div class="col-12 col-lg-7">
+                    <h2 class="h3 text-dark fw-bold mb-1">Miguel Armando Quintero Quintero</h2>
+                    <h3 class="h6 text-primary mb-3">Estudiante de Tecnología en Desarrollo de Software 3233929</h3>
+                    <p class="text-secondary">Este proyecto tiene como objetivo implementar un sistema de inventario para gestionar y controlar los productos en stock.</p>
+                    
+                    <h4 class="h6 fw-bold text-dark mt-3">Objetivos del proyecto:</h4>
+                    <ol class="text-secondary mb-4">
+                        <li>Crear Productos</li>
+                        <li>Consultar Productos</li>
+                        <li>Actualizar Productos</li>
+                        <li>Eliminar Productos</li>
+                        <li>Vender Productos</li>
+                    </ol>
+
+                    <a href="https://github.com/miguequin" target="_blank" class="btn btn-outline-primary fw-bold">
+                        <i class="fa-brands fa-github me-2"></i>Contactar al Administrador
+                    </a>
+                </div>
+
+                <div class="col-12 col-lg-5 text-center">
+                     <img src="../img/img0.jpg" alt="Imagen de Inventario">
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Pie de Página -->
+    <footer class="bg-dark text-white text-center py-4 mt-5">
+        <div class="container">
+            <p class="m-0">Sistema de Inventario &copy; 2026</p>
+            <small class="text-secondary">Tecnología en Desarrollo de Software - SENA</small>
+        </div>
+    </footer>
+
+    <!-- JS de Bootstrap 5 -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="../js/app.js"></script>
+</body>
+</html>
