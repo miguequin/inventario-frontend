@@ -28,6 +28,7 @@ async function cargarProductos() {
                     <td>${producto.nombre}</td>
                     <td><span class="badge bg-secondary">${producto.categoria || 'N/A'}</span></td>
                     <td class="text-success fw-bold">$${Number(producto.precio).toLocaleString()}</td>
+                    <td>${producto.marca || 'N/A'}</td>
                     <td class="text-center">
                         <span class="badge ${producto.cantidad > 5 ? 'bg-success' : (producto.cantidad > 0 ? 'bg-warning text-dark' : 'bg-danger')}">
                             ${producto.cantidad}
@@ -72,9 +73,9 @@ if (formProducto) {
 
         const codigo = document.getElementById("codigo").value.trim();
         const nombre = document.getElementById("nombre").value.trim();
-        const marca = document.getElementById("marca").value.trim();
         const categoria = document.getElementById("categoria").value;
         const precio = parseFloat(document.getElementById("precio").value);
+        const marca = document.getElementById("marca").value.trim();
         const cantidad = parseInt(document.getElementById("cantidad").value);
 
         if (precio <= 0 || cantidad < 0) {
@@ -133,8 +134,8 @@ window.iniciarEdicion = function (id) {
     document.getElementById("nombre").value = prod.nombre;
     document.getElementById("categoria").value = prod.categoria;
     document.getElementById("precio").value = prod.precio;
-    document.getElementById("cantidad").value = prod.cantidad;
     document.getElementById("marca").value = prod.marca || "";
+    document.getElementById("cantidad").value = prod.cantidad;
 
     if (btnGuardar) {
         btnGuardar.innerHTML = `<i class="fa-solid fa-check me-1"></i>Actualizar Producto`;
