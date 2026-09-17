@@ -72,6 +72,7 @@ if (formProducto) {
 
         const codigo = document.getElementById("codigo").value.trim();
         const nombre = document.getElementById("nombre").value.trim();
+        const marca = document.getElementById("marca").value.trim();
         const categoria = document.getElementById("categoria").value;
         const precio = parseFloat(document.getElementById("precio").value);
         const cantidad = parseInt(document.getElementById("cantidad").value);
@@ -133,6 +134,7 @@ window.iniciarEdicion = function (id) {
     document.getElementById("categoria").value = prod.categoria;
     document.getElementById("precio").value = prod.precio;
     document.getElementById("cantidad").value = prod.cantidad;
+    document.getElementById("Marca").value = prod.marca || "";
 
     if (btnGuardar) {
         btnGuardar.innerHTML = `<i class="fa-solid fa-check me-1"></i>Actualizar Producto`;
@@ -233,6 +235,7 @@ async function buscarProductoPorId() {
                         <i class="fa-solid fa-trash"></i> Eliminar
                     </button>
                 </td>
+                
             </tr>
         `;
     } catch (error) {
