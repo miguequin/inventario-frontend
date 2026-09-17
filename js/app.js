@@ -1,16 +1,13 @@
-// URL base de tu backend Spring Boot (ajustada al puerto configurado en tu servidor)
 const API_URL = "https://inventario-backend-production-e240.up.railway.app/productos";
 
 let productos = [];
 let idEditando = null;
 
 // =========================================================================
-// PARTE 1: CONSULTAR PRODUCTOS (GET - Páginas 194-196)
+// PARTE 1: CONSULTAR PRODUCTOS (GET)
 // =========================================================================
 async function cargarProductos() {
     const tabla = document.getElementById("tablaProductos");
-    
-    // Si no existe la tabla en esta página, detenemos la función sin romper el script
     if (!tabla) return;
 
     try {
@@ -27,8 +24,9 @@ async function cargarProductos() {
                     <td class="fw-bold">${producto.codigo}</td>
                     <td>${producto.nombre}</td>
                     <td><span class="badge bg-secondary">${producto.categoria || 'N/A'}</span></td>
-                    <td class="text-success fw-bold">$${Number(producto.precio).toLocaleString()}</td>
                     <td>${producto.marca || 'N/A'}</td>
+                    <td>${producto.proveedor || 'N/A'}</td>
+                    <td class="text-success fw-bold">$${Number(producto.precio).toLocaleString()}</td>
                     <td class="text-center">
                         <span class="badge ${producto.cantidad > 5 ? 'bg-success' : (producto.cantidad > 0 ? 'bg-warning text-dark' : 'bg-danger')}">
                             ${producto.cantidad}
@@ -61,7 +59,7 @@ function calcularTotalInventario() {
 }
 
 // =========================================================================
-// PARTE 2: REGISTRAR (POST) Y MODIFICAR (PUT) (Páginas 196-197)
+// PARTE 2: REGISTRAR (POST) Y MODIFICAR (PUT)
 // =========================================================================
 const formProducto = document.getElementById("formProducto");
 const btnGuardar = document.getElementById("btnGuardar");
@@ -74,16 +72,29 @@ if (formProducto) {
         const codigo = document.getElementById("codigo").value.trim();
         const nombre = document.getElementById("nombre").value.trim();
         const categoria = document.getElementById("categoria").value;
-        const precio = parseFloat(document.getElementById("precio").value);
         const marca = document.getElementById("marca").value.trim();
+        const proveedor = document.getElementById("proveedor").value.trim();
+        const precio = parseFloat(document.getElementById("precio").value);
         const cantidad = parseInt(document.getElementById("cantidad").value);
+        const stockMinimoInput = document.getElementById("stockMinimo");
+        const stockMinimo = stockMinimoInput ? parseInt(stockMinimoInput.value) : 1;
 
         if (precio <= 0 || cantidad < 0) {
             alert("El precio debe ser mayor a 0 y la cantidad no puede ser negativa.");
             return;
         }
 
-        const producto = { codigo: document.getElementById("codigo").value,     nombre: document.getElementById("nombre").value,     categoria: document.getElementById("categoria").value,     precio: document.getElementById("precio").value,     cantidad: document.getElementById("cantidad").value  };
+        // Se incluyen marca y proveedor correctamente en el objeto JSON
+        const producto = {
+            codigo: codigo,
+            nombre: nombre,
+            categoria: categoria,
+            marca: marca,
+            proveedor: proveedor,
+            precio: precio,
+            cantidad: cantidad,
+            stockMinimo: stockMinimo
+        };
 
         try {
             if (idEditando === null) {
@@ -96,7 +107,7 @@ if (formProducto) {
 
                 if (respuesta.ok) {
                     alert("Producto registrado correctamente");
-                    formProducto.reset();
+                    limpiarFormulario();
                     cargarProductos();
                 } else {
                     alert("No fue posible registrar el producto");
@@ -111,7 +122,7 @@ if (formProducto) {
 
                 if (respuesta.ok) {
                     alert("Producto actualizado correctamente");
-                    cancelarEdicion();
+                    limpiarFormulario();
                     cargarProductos();
                 } else {
                     alert("No fue posible actualizar el producto");
@@ -130,12 +141,16 @@ window.iniciarEdicion = function (id) {
     if (!prod) return;
 
     idEditando = prod.id;
-    document.getElementById("codigo").value = prod.codigo;
-    document.getElementById("nombre").value = prod.nombre;
-    document.getElementById("categoria").value = prod.categoria;
-    document.getElementById("precio").value = prod.precio;
+    document.getElementById("codigo").value = prod.codigo || "";
+    document.getElementById("nombre").value = prod.nombre || "";
+    document.getElementById("categoria").value = prod.categoria || "";
     document.getElementById("marca").value = prod.marca || "";
-    document.getElementById("cantidad").value = prod.cantidad;
+    document.getElementById("proveedor").value = prod.proveedor || "";
+    document.getElementById("precio").value = prod.precio || 0;
+    document.getElementById("cantidad").value = prod.cantidad || 0;
+
+    const stockMin = document.getElementById("stockMinimo");
+    if (stockMin) stockMin.value = prod.stockMinimo || 1;
 
     if (btnGuardar) {
         btnGuardar.innerHTML = `<i class="fa-solid fa-check me-1"></i>Actualizar Producto`;
@@ -144,9 +159,13 @@ window.iniciarEdicion = function (id) {
     if (formTitulo) {
         formTitulo.innerHTML = `<i class="fa-solid fa-pen-to-square me-2"></i>Modificar Producto (${prod.codigo})`;
     }
+
+    // Llevar la vista hacia el formulario suavemente
+    window.scrollTo({ top: 0, behavior: 'smooth' });
 };
 
-window.cancelarEdicion = function () {
+// Función para limpiar/cancelar edición
+window.limpiarFormulario = function () {
     idEditando = null;
     if (formProducto) formProducto.reset();
     if (btnGuardar) {
@@ -158,8 +177,10 @@ window.cancelarEdicion = function () {
     }
 };
 
+window.cancelarEdicion = window.limpiarFormulario;
+
 // =========================================================================
-// PARTE 3: ELIMINAR PRODUCTOS (DELETE - Página 198)
+// PARTE 3: ELIMINAR PRODUCTOS (DELETE)
 // =========================================================================
 window.eliminarProducto = async function (id, codigo) {
     const confirmar = confirm(`¿Está seguro de eliminar este producto (${codigo})?`);
@@ -182,13 +203,12 @@ window.eliminarProducto = async function (id, codigo) {
     }
 };
 
-// Ejecución inicial para pintar la tabla desde MySQL
-cargarProductos();
 // =========================================================================
 // BUSCAR PRODUCTO POR ID (GET /productos/{id})
 // =========================================================================
 async function buscarProductoPorId() {
     const inputId = document.getElementById("buscarId");
+    if (!inputId) return;
     const id = inputId.value.trim();
 
     if (!id) {
@@ -197,7 +217,6 @@ async function buscarProductoPorId() {
     }
 
     try {
-        // Hace la petición al endpoint con PathVariable de Spring Boot
         const respuesta = await fetch(`${API_URL}/${id}`);
 
         if (!respuesta.ok) {
@@ -209,21 +228,20 @@ async function buscarProductoPorId() {
         const tabla = document.getElementById("tablaProductos");
         if (!tabla) return;
 
-        // Si el endpoint devuelve null o un objeto vacío
         if (!producto || !producto.id) {
             alert(`No se encontró ningún producto con el ID ${id}`);
             return;
         }
 
-        // Renderiza únicamente el producto encontrado en la tabla
         tabla.innerHTML = `
             <tr>
                 <td>${producto.id}</td>
                 <td class="fw-bold">${producto.codigo}</td>
                 <td>${producto.nombre}</td>
                 <td><span class="badge bg-secondary">${producto.categoria || 'N/A'}</span></td>
-                <td class="text-success fw-bold">$${Number(producto.precio).toLocaleString()}</td>
                 <td>${producto.marca || 'N/A'}</td>
+                <td>${producto.proveedor || 'N/A'}</td>
+                <td class="text-success fw-bold">$${Number(producto.precio).toLocaleString()}</td>
                 <td class="text-center">
                     <span class="badge ${producto.cantidad > 5 ? 'bg-success' : (producto.cantidad > 0 ? 'bg-warning text-dark' : 'bg-danger')}">
                         ${producto.cantidad}
@@ -237,7 +255,6 @@ async function buscarProductoPorId() {
                         <i class="fa-solid fa-trash"></i> Eliminar
                     </button>
                 </td>
-                
             </tr>
         `;
     } catch (error) {
@@ -249,5 +266,8 @@ async function buscarProductoPorId() {
 function limpiarBusqueda() {
     const inputId = document.getElementById("buscarId");
     if (inputId) inputId.value = "";
-    cargarProductos(); // Vuelve a listar todos los productos de MySQL
+    cargarProductos();
 }
+
+// Ejecución inicial para cargar los productos al abrir la página
+cargarProductos();

@@ -50,54 +50,68 @@
             <h2 class="h4 text-primary fw-bold mb-3 border-bottom pb-2" id="formTitulo">
                 <i class="fa-solid fa-pen-to-square me-2"></i>Registrar Producto
             </h2>
+            <form id="formProducto" class="p-3">
+    <!-- Fila 1 -->
+    <div class="row g-3 mb-3">
+    <div class="col-md-4">
+    <label for="codigo" class="form-label fw-bold">Código:</label>
+    <input type="text" class="form-control" id="codigo" placeholder="Ej: P001" required>
+    </div>
+    <div class="col-md-4">
+    <label for="nombre" class="form-label fw-bold">Nombre:</label>
+    <input type="text" class="form-control" id="nombre" placeholder="Ej: Procesador Intel i5" required>
+    </div>
+    <div class="col-md-4">
+    <label for="categoria" class="form-label fw-bold">Categoría:</label>
+    <select class="form-select" id="categoria" required>
+        <option value="" selected disabled>Seleccione...</option>
+        <option value="Tecnología">Tecnología</option>
+        <option value="Herramientas">Herramientas</option>
+        <option value="Accesorios">Accesorios</option>
+    </select>
+    </div>
+</div>
 
-            <form id="formProducto">
-                <div class="row g-3">
-                    <div class="col-12 col-md-4">
-                        <label for="codigo" class="form-label fw-semibold text-secondary">Código:</label>
-                        <input type="text" class="form-control" id="codigo" placeholder="Ej: P001" required>
-                    </div>
-                    <div class="col-12 col-md-4">
-                        <label for="nombre" class="form-label fw-semibold text-secondary">Nombre:</label>
-                        <input type="text" class="form-control" id="nombre" placeholder="Ej: Procesador Intel i5" required>
-                    </div>
-                    <div class="col-12 col-md-4">
-                        <label for="categoria" class="form-label fw-semibold text-secondary">Categoría:</label>
-                        <select class="form-select" id="categoria" required>
-                            <option value="">Seleccione...</option>
-                            <option value="Tecnología">Tecnología</option>
-                            <option value="Papelería">Papelería</option>
-                            <option value="Accesorios">Accesorios</option>
-                        </select>
-                    </div>
-                    <div class="col-12 col-md-4">
-                        <label for="proveedor" class="form-label fw-semibold text-secondary">Proveedor:</label>
-                        <input type="text" class="form-control" id="proveedor" placeholder="Ej: Tecno SAS" required>
-                    </div>
-                    <div class="col-12 col-md-4">
-                        <label for="precio" class="form-label fw-semibold text-secondary">Precio ($):</label>
-                        <div class="input-group">
-                            <span class="input-group-text">$</span>
-                            <input type="number" class="form-control" id="precio" step="0.01" min="0.01" placeholder="0.00" required>
-                        </div>
-                        <div class="col-12 col-md-4">
-                        <label for="marca" class="form-label fw-semibold text-secondary">Marca:</label>
-                        <input type="text" class="form-control" id="marca" placeholder="Ej: Dell" required>
-                    </div>
-                    <div class="col-12 col-md-4">
-                        <label for="cantidad" class="form-label fw-semibold text-secondary">Cantidad en Stock:</label>
-                        <input type="number" class="form-control" id="cantidad" min="0" placeholder="0" required>
-                    </div>
-                <div class="mt-4 d-flex gap-2">
-                    <button type="submit" id="btnGuardar" class="btn btn-primary fw-semibold">
-                        <i class="fa-solid fa-floppy-disk me-1"></i>Guardar Producto
-                    </button>
-                    <button type="button" id="btnCancelar" class="btn btn-outline-secondary" onclick="cancelarEdicion()">
-                        <i class="fa-solid fa-rotate-left me-1"></i>Limpiar / Cancelar
-                    </button>
-                </div>
-            </form>
-        </section>
+<!-- Fila 2 -->
+<div class="row g-3 mb-3">
+    <div class="col-md-4">
+    <label for="marca" class="form-label fw-bold">Marca:</label>
+    <input type="text" class="form-control" id="marca" placeholder="Ej: Dell" required>
+    </div>
+    <div class="col-md-4">
+    <label for="proveedor" class="form-label fw-bold">Proveedor:</label>
+    <input type="text" class="form-control" id="proveedor" placeholder="Ej: Tecno SAS" required>
+    </div>
+    <div class="col-md-4">
+    <label for="precio" class="form-label fw-bold">Precio ($):</label>
+    <input type="number" step="0.01" class="form-control" id="precio" placeholder="0.00" required>
+    </div>
+</div>
+
+<!-- Fila 3 -->
+<div class="row g-3 mb-3">
+    <div class="col-md-4">
+    <label for="cantidad" class="form-label fw-bold">Cantidad en Stock:</label>
+    <input type="number" class="form-control" id="cantidad" placeholder="0" required>
+    </div>
+    <div class="col-md-4">
+    <!-- Espacio si manejas stock mínimo -->
+    <label for="stockMinimo" class="form-label fw-bold">Stock Mínimo:</label>
+    <input type="number" class="form-control" id="stockMinimo" placeholder="0" value="1">
+    </div>
+</div>
+
+<!-- Botones -->
+<div class="d-flex gap-2 mt-3">
+    <button type="submit" id="btnGuardar" class="btn btn-primary">
+    <i class="bi bi-save"></i> Guardar Producto
+    </button>
+    <button type="button" id="btnLimpiar" class="btn btn-outline-secondary" onclick="limpiarFormulario()">
+    <i class="bi bi-arrow-counterclockwise"></i> Limpiar / Cancelar
+    </button>
+</div>
+</form>
+</section>
 
         <div class="card mb-4 shadow-sm">
     <div class="card-body">
@@ -126,23 +140,24 @@
             </h2>
 
             <div class="table-responsive">
-    <table class="table table-hover table-striped align-middle border">
-        <thead class="table-dark">
-            <tr>
-                <th scope="col">ID</th>
-                <th scope="col">Código</th>
-                <th scope="col">Producto</th>
-                <th scope="col">Categoría</th>
-                <th scope="col">Precio</th>
-                <th scope="col">Marca</th>
-                <th scope="col" class="text-center">Cantidad</th>
-                <th scope="col" class="text-center">Acciones</th>
-            </tr>
-        </thead>
-        <tbody id="tablaProductos">
-            <!-- Filas inyectadas por app.js -->
-        </tbody>
-    </table>
+    <table class="table table-hover align-middle">
+<thead class="table-dark">
+    <tr>
+    <th>ID</th>
+    <th>Código</th>
+    <th>Producto</th>
+    <th>Categoría</th>
+    <th>Marca</th>
+    <th>Proveedor</th>
+    <th>Precio</th>
+    <th>Cantidad</th>
+    <th>Acciones</th>
+    </tr>
+</thead>
+<tbody id="cuerpo-tabla">
+    <!-- Se llena con app.js -->
+</tbody>
+</table>
 </div>
             <!-- Resumen Total -->
             <div class="mt-3 text-end">
