@@ -134,7 +134,7 @@ window.iniciarEdicion = function (id) {
     document.getElementById("categoria").value = prod.categoria;
     document.getElementById("precio").value = prod.precio;
     document.getElementById("cantidad").value = prod.cantidad;
-    document.getElementById("Marca").value = prod.marca || "";
+    document.getElementById("marca").value = prod.marca || "";
 
     if (btnGuardar) {
         btnGuardar.innerHTML = `<i class="fa-solid fa-check me-1"></i>Actualizar Producto`;
@@ -222,6 +222,7 @@ async function buscarProductoPorId() {
                 <td>${producto.nombre}</td>
                 <td><span class="badge bg-secondary">${producto.categoria || 'N/A'}</span></td>
                 <td class="text-success fw-bold">$${Number(producto.precio).toLocaleString()}</td>
+                <td>${producto.marca || 'N/A'}</td>
                 <td class="text-center">
                     <span class="badge ${producto.cantidad > 5 ? 'bg-success' : (producto.cantidad > 0 ? 'bg-warning text-dark' : 'bg-danger')}">
                         ${producto.cantidad}
