@@ -268,6 +268,88 @@ function limpiarBusqueda() {
     if (inputId) inputId.value = "";
     cargarProductos();
 }
+// =========================================================================
+// BUSCAR PRODUCTOS POR NOMBRE (GET /productos/buscar/{nombre})
+// =========================================================================
+async function buscarProductosPorNombre() {
+    const input = document.getElementById("inputBuscarNombre");
+    if (!input) return;
 
+    const nombre = input.value.trim();
+
+    // Si la caja está vacía, recarga todos los productos
+    if (!nombre) {
+        cargarProductos();
+        return;
+    }
+
+    try {
+        const respuesta = await fetch(`${API_URL}/buscar/${encodeURIComponent(nombre)}`);
+
+        if (!respuesta.ok) {
+            throw new Error(`Error en la consulta: ${respuesta.status}`);
+        }
+
+        const productosEncontrados = await respuesta.json();
+        
+        // Buscamos la tabla con cualquiera de sus IDs posibles
+        const tabla = document.getElementById("tablaProductos") || document.getElementById("cuerpo-tabla");
+        if (!tabla) return;
+
+        tabla.innerHTML = "";
+
+        // Si no hubo coincidencias
+        if (productosEncontrados.length === 0) {
+            tabla.innerHTML = `
+                <tr>
+                    <td colspan="9" class="text-center text-muted py-3">
+                        <i class="fa-solid fa-circle-exclamation me-1"></i>
+                        No se encontraron productos que coincidan con "<strong>${nombre}</strong>".
+                    </td>
+                </tr>
+            `;
+            return;
+        }
+
+        // Pinta únicamente los productos encontrados
+        productosEncontrados.forEach(producto => {
+            tabla.innerHTML += `
+                <tr>
+                    <td>${producto.id}</td>
+                    <td class="fw-bold">${producto.codigo || ''}</td>
+                    <td>${producto.nombre || ''}</td>
+                    <td><span class="badge bg-secondary">${producto.categoria || 'N/A'}</span></td>
+                    <td>${producto.marca || 'N/A'}</td>
+                    <td>${producto.proveedor || 'N/A'}</td>
+                    <td class="text-success fw-bold">$${Number(producto.precio || 0).toLocaleString()}</td>
+                    <td class="text-center">
+                        <span class="badge ${producto.cantidad > 5 ? 'bg-success' : (producto.cantidad > 0 ? 'bg-warning text-dark' : 'bg-danger')}">
+                            ${producto.cantidad || 0}
+                        </span>
+                    </td>
+                    <td class="text-center">
+                        <button class="btn btn-warning btn-sm me-1" onclick="iniciarEdicion(${producto.id})">
+                            <i class="fa-solid fa-pen"></i> Editar
+                        </button>
+                        <button class="btn btn-danger btn-sm" onclick="eliminarProducto(${producto.id}, '${producto.codigo}')">
+                            <i class="fa-solid fa-trash"></i> Eliminar
+                        </button>
+                    </td>
+                </tr>
+            `;
+        });
+
+    } catch (error) {
+        console.error("Error al buscar productos por nombre:", error);
+        alert("Ocurrió un error al buscar los productos.");
+    }
+}
+
+// Limpia el input de búsqueda y vuelve a mostrar la lista completa
+function limpiarBusquedaNombre() {
+    const input = document.getElementById("inputBuscarNombre");
+    if (input) input.value = "";
+    cargarProductos();
+}
 // Ejecución inicial para cargar los productos al abrir la página
 cargarProductos();

@@ -133,6 +133,34 @@
         </div>
     </div>
 </div>
+<div class="card mb-4 shadow-sm border-0">
+<div class="card-body">
+<div class="row g-2 align-items-center">
+    <div class="col-auto">
+        <label for="inputBuscarNombre" class="col-form-label fw-bold">
+        <i class="fa-solid fa-magnifying-glass me-1"></i>Buscar por Nombre:
+        </label>
+    </div>
+    <div class="col-sm-4">
+        <input 
+        type="text" 
+        id="inputBuscarNombre" 
+        class="form-control" 
+        placeholder="Ej: Teclado, Intel, Airpods..."
+        onkeyup="if(event.key === 'Enter') buscarProductosPorNombre()"
+        >
+    </div>
+    <div class="col-auto">
+        <button type="button" class="btn btn-primary" onclick="buscarProductosPorNombre()">
+        <i class="fa-solid fa-magnifying-glass me-1"></i> Buscar
+        </button>
+        <button type="button" class="btn btn-secondary" onclick="limpiarBusquedaNombre()">
+        <i class="fa-solid fa-rotate-left me-1"></i> Ver Todos
+        </button>
+    </div>
+    </div>
+</div>
+</div>
         <!-- 2. Tabla del Inventario -->
         <section class="card border-0 shadow-sm rounded-3 p-4 bg-white">
             <h2 class="h4 text-primary fw-bold mb-3 border-bottom pb-2">
