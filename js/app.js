@@ -351,5 +351,32 @@ function limpiarBusquedaNombre() {
     if (input) input.value = "";
     cargarProductos();
 }
+// =========================================================================
+// MOSTRAR TOTAL DE PRODUCTOS EN PÁGINA PRINCIPAL (GET /productos)
+// =========================================================================
+async function mostrarTotalProductosInicio() {
+    const contadorElemento = document.getElementById("contadorTotalProductos");
+    
+    // Si no estamos en la página principal o no existe este elemento, salimos
+    if (!contadorElemento) return;
+
+    try {
+        const respuesta = await fetch(API_URL);
+        if (!respuesta.ok) throw new Error("Error al consultar productos");
+
+        const productos = await respuesta.json();
+        
+        // La cantidad total es la longitud del arreglo devuelto por MySQL
+        contadorElemento.textContent = productos.length;
+    } catch (error) {
+        console.error("Error al obtener total de productos:", error);
+        contadorElemento.textContent = "0";
+    }
+}
+
+// Ejecutar cuando cargue el documento
+document.addEventListener("DOMContentLoaded", () => {
+    mostrarTotalProductosInicio();
+});
 // Ejecución inicial para cargar los productos al abrir la página
 cargarProductos();
